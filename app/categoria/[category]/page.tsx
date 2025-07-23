@@ -1,23 +1,23 @@
-import { notFound } from 'next/navigation';
-import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
-import { ProductCard } from '@/components/product-card';
-import { getProductsByCategory, categories } from '@/lib/products';
+import { notFound } from "next/navigation";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import { ProductCard } from "@/components/product-card";
+import { getProductsByCategory, categories } from "@/lib/products";
 
-interface CategoryPageProps {
+type Props = {
   params: {
     category: string;
   };
-}
+};
 
 export async function generateStaticParams() {
   // Function to normalize strings to ASCII-safe slugs
   const normalizeSlug = (str: string) => {
     return str
       .toLowerCase()
-      .normalize('NFD') // Decompose characters
-      .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
-      .replace(/\s+/g, '-'); // Replace spaces with hyphens
+      .normalize("NFD") // Decompose characters
+      .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
+      .replace(/\s+/g, "-"); // Replace spaces with hyphens
   };
 
   return categories.map((category) => ({
@@ -26,32 +26,32 @@ export async function generateStaticParams() {
 }
 
 const categoryEmojis: { [key: string]: string } = {
-  'educativos': '🧩',
-  'muñecas': '👸',
-  'vehículos': '🚗',
-  'peluches': '🧸',
-  'juego de roles': '🎭',
-  'deportes': '⚽',
-  'arte y manualidades': '🎨'
+  educativos: "🧩",
+  muñecas: "👸",
+  vehículos: "🚗",
+  peluches: "🧸",
+  "juego de roles": "🎭",
+  deportes: "⚽",
+  "arte y manualidades": "🎨",
 };
 
-export default function CategoryPage({ params }: CategoryPageProps) {
-  const categoryName = decodeURIComponent(params.category).replace(/-/g, ' ');
-  const normalizedCategory = categories.find(cat => 
-    cat.toLowerCase() === categoryName.toLowerCase()
+export default async function CategoryPage({ params }: Props) {
+  const categoryName = decodeURIComponent(params.category).replace(/-/g, " ");
+  const normalizedCategory = categories.find(
+    (cat) => cat.toLowerCase() === categoryName.toLowerCase()
   );
-  
+
   if (!normalizedCategory) {
     notFound();
   }
 
   const products = getProductsByCategory(normalizedCategory);
-  const emoji = categoryEmojis[normalizedCategory.toLowerCase()] || '🎯';
+  const emoji = categoryEmojis[normalizedCategory.toLowerCase()] || "🎯";
 
   return (
     <div className="min-h-screen">
       <Header />
-      
+
       <main className="container mx-auto px-4 py-8">
         <div className="text-center mb-12">
           <div className="text-6xl mb-4">{emoji}</div>
@@ -59,7 +59,8 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             {normalizedCategory}
           </h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Descubre nuestra increíble selección de {normalizedCategory.toLowerCase()}
+            Descubre nuestra increíble selección de{" "}
+            {normalizedCategory.toLowerCase()}
           </p>
         </div>
 
@@ -67,10 +68,11 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           <>
             <div className="mb-6">
               <p className="text-gray-600">
-                {products.length} producto{products.length !== 1 ? 's' : ''} encontrado{products.length !== 1 ? 's' : ''}
+                {products.length} producto{products.length !== 1 ? "s" : ""}{" "}
+                encontrado{products.length !== 1 ? "s" : ""}
               </p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
@@ -89,7 +91,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           </div>
         )}
       </main>
-      
+
       <Footer />
     </div>
   );
