@@ -1,29 +1,8 @@
-import { notFound } from "next/navigation";
-import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { Header } from "@/components/header";
 import { ProductCard } from "@/components/product-card";
-import { getProductsByCategory, categories } from "@/lib/products";
-
-type Props = {
-  params: {
-    category: string;
-  };
-};
-
-export async function generateStaticParams() {
-  // Function to normalize strings to ASCII-safe slugs
-  const normalizeSlug = (str: string) => {
-    return str
-      .toLowerCase()
-      .normalize("NFD") // Decompose characters
-      .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
-      .replace(/\s+/g, "-"); // Replace spaces with hyphens
-  };
-
-  return categories.map((category) => ({
-    category: normalizeSlug(category),
-  }));
-}
+import { categories, getProductsByCategory } from "@/lib/products";
+import { notFound } from "next/navigation";
 
 const categoryEmojis: { [key: string]: string } = {
   educativos: "🧩",
@@ -35,8 +14,13 @@ const categoryEmojis: { [key: string]: string } = {
   "arte y manualidades": "🎨",
 };
 
-export default async function CategoryPage({ params }: Props) {
-  const categoryName = decodeURIComponent(params.category).replace(/-/g, " ");
+export default async function CategoryPage({
+  params,
+}: {
+  params: Promise<{ category: string }>;
+}) {
+  const { category } = await params;
+  const categoryName = decodeURIComponent(category).replace(/-/g, " ");
   const normalizedCategory = categories.find(
     (cat) => cat.toLowerCase() === categoryName.toLowerCase()
   );
@@ -45,7 +29,7 @@ export default async function CategoryPage({ params }: Props) {
     notFound();
   }
 
-  const products = getProductsByCategory(normalizedCategory);
+  const products = await getProductsByCategory(normalizedCategory);
   const emoji = categoryEmojis[normalizedCategory.toLowerCase()] || "🎯";
 
   return (

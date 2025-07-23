@@ -1,41 +1,35 @@
-import { notFound } from 'next/navigation';
-import Image from 'next/image';
-import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
-import { ProductCard } from '@/components/product-card';
-import { AddToCartButton } from '@/components/add-to-cart-button';
-import { getProductBySlug, getProductsByCategory, products } from '@/lib/products';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { Star, Shield, Truck, Heart } from 'lucide-react';
+import { AddToCartButton } from "@/components/add-to-cart-button";
+import { Footer } from "@/components/footer";
+import { Header } from "@/components/header";
+import { ProductCard } from "@/components/product-card";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { getProductBySlug, getProductsByCategory } from "@/lib/products";
+import { Heart, Shield, Star, Truck } from "lucide-react";
+import Image from "next/image";
+import { notFound } from "next/navigation";
 
-interface ProductPageProps {
-  params: {
-    slug: string;
-  };
-}
+export default async function ProductPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
 
-export async function generateStaticParams() {
-  return products.map((product) => ({
-    slug: product.slug,
-  }));
-}
+  const product = getProductBySlug(slug);
 
-export default function ProductPage({ params }: ProductPageProps) {
-  const product = getProductBySlug(params.slug);
-  
   if (!product) {
     notFound();
   }
 
   const relatedProducts = getProductsByCategory(product.category)
-    .filter(p => p.id !== product.id)
+    .filter((p) => p.id !== product.id)
     .slice(0, 3);
 
   return (
     <div className="min-h-screen">
       <Header />
-      
+
       <main className="container mx-auto px-4 py-8">
         {/* Product Details */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
@@ -58,7 +52,10 @@ export default function ProductPage({ params }: ProductPageProps) {
           {/* Product Info */}
           <div className="space-y-6">
             <div>
-              <Badge variant="secondary" className="mb-2 bg-pastel-purple/20 text-purple-700">
+              <Badge
+                variant="secondary"
+                className="mb-2 bg-pastel-purple/20 text-purple-700"
+              >
                 {product.category}
               </Badge>
               <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
@@ -84,7 +81,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 
             <div className="space-y-4">
               <AddToCartButton product={product} />
-              
+
               <div className="flex space-x-4">
                 <button className="flex items-center space-x-2 text-gray-600 hover:text-bright-pink transition-colors">
                   <Heart className="h-5 w-5" />
@@ -134,7 +131,7 @@ export default function ProductPage({ params }: ProductPageProps) {
           </section>
         )}
       </main>
-      
+
       <Footer />
     </div>
   );
