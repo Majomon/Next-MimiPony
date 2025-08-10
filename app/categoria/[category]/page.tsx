@@ -14,11 +14,11 @@ const categoryEmojis: { [key: string]: string } = {
   "arte y manualidades": "🎨",
 };
 
-export default async function CategoryPage({
-  params,
-}: {
+interface CategoryPageProps {
   params: { category: string };
-}) {
+}
+
+export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category } = params;
 
   const categoryParam = decodeURIComponent(category)
