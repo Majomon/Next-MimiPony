@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { ShoppingCart, Heart } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Product, useCartStore } from '@/lib/cart-store';
-import { toast } from 'sonner';
+import Image from "next/image";
+import Link from "next/link";
+import { ShoppingCart, Heart } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Product, useCartStore } from "@/lib/cart-store";
+import { toast } from "sonner";
 
 interface ProductCardProps {
   product: Product;
@@ -50,11 +50,14 @@ export function ProductCard({ product }: ProductCardProps) {
           </Badge>
         </div>
       </Link>
-      
+
       <CardContent className="p-4">
         <Link href={`/producto/${product.slug}`}>
           <div className="space-y-2">
-            <Badge variant="secondary" className="text-xs bg-pastel-purple/20 text-purple-700">
+            <Badge
+              variant="secondary"
+              className="text-xs bg-pastel-purple/20 text-purple-700"
+            >
               {product.category}
             </Badge>
             <h3 className="font-semibold text-gray-800 group-hover:text-bright-pink transition-colors line-clamp-2">
@@ -65,7 +68,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </p>
             <div className="flex items-center justify-between pt-2">
               <span className="text-2xl font-bold text-bright-pink">
-                ${product.price.toLocaleString()}
+                ${product.price}
               </span>
               <Button
                 onClick={handleAddToCart}
