@@ -19,7 +19,7 @@ export default async function CategoryPage({
 }: {
   params: { category: string };
 }) {
-  const { category } = await params;
+  const { category } = params;
 
   const categoryParam = decodeURIComponent(category)
     .replace(/-/g, " ")
