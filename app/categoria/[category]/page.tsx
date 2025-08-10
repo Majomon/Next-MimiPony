@@ -18,8 +18,12 @@ interface CategoryPageProps {
   params: { category: string };
 }
 
-export default async function CategoryPage({ params }: CategoryPageProps) {
-  const { category } = params;
+export default async function CategoryPage({
+  params,
+}: {
+  params: Promise<{ category: string }>;
+}) {
+  const { category } = await params;
 
   const categoryParam = decodeURIComponent(category)
     .replace(/-/g, " ")
