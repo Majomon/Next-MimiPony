@@ -43,9 +43,9 @@ export default async function ProductPage({
                 height={400}
                 className="w-full h-96 object-cover"
               />
-              <Badge className="absolute top-4 left-4 bg-bright-pink text-white">
+              {/*    <Badge className="absolute top-4 left-4 bg-bright-pink text-white">
                 {product.ageRange}
-              </Badge>
+              </Badge> */}
             </div>
           </div>
 
