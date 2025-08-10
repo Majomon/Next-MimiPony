@@ -6,7 +6,6 @@ export interface Product {
   category: string;
   description: string;
   slug: string;
-  ageRange: string;
   inStock: boolean;
 }
 
