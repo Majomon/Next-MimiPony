@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
-import { ProductCard } from '@/components/product-card';
-import { Filters } from '@/components/filters';
-import { products } from '@/lib/products';
-import { Search } from 'lucide-react';
-import { Input } from '@/components/ui/input';
+import { useState } from "react";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import { ProductCard } from "@/components/product-card";
+import { Filters } from "@/components/filters";
+import { products } from "@/lib/products";
+import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 export default function ProductsPage() {
   const [filteredProducts, setFilteredProducts] = useState(products);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleFiltersChange = (filters: {
     categories: string[];
@@ -22,29 +22,34 @@ export default function ProductsPage() {
 
     // Filter by categories
     if (filters.categories.length > 0) {
-      filtered = filtered.filter(product => 
+      filtered = filtered.filter((product) =>
         filters.categories.includes(product.category)
       );
     }
 
     // Filter by price range
-    filtered = filtered.filter(product => 
-      product.price >= filters.priceRange[0] && product.price <= filters.priceRange[1]
+    filtered = filtered.filter(
+      (product) =>
+        product.price >= filters.priceRange[0] &&
+        product.price <= filters.priceRange[1]
     );
 
     // Filter by age ranges
-    if (filters.ageRanges.length > 0) {
+    /*     if (filters.ageRanges.length > 0) {
       filtered = filtered.filter(product => 
         filters.ageRanges.some(ageRange => product.ageRange.includes(ageRange.split('-')[0]))
       );
-    }
+    } */
 
     // Filter by search term
     if (searchTerm) {
-      filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.category.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter(
+        (product) =>
+          product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          product.description
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          product.category.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -56,10 +61,11 @@ export default function ProductsPage() {
     let filtered = products;
 
     if (term) {
-      filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(term.toLowerCase()) ||
-        product.description.toLowerCase().includes(term.toLowerCase()) ||
-        product.category.toLowerCase().includes(term.toLowerCase())
+      filtered = filtered.filter(
+        (product) =>
+          product.name.toLowerCase().includes(term.toLowerCase()) ||
+          product.description.toLowerCase().includes(term.toLowerCase()) ||
+          product.category.toLowerCase().includes(term.toLowerCase())
       );
     }
 
@@ -69,7 +75,7 @@ export default function ProductsPage() {
   return (
     <div className="min-h-screen">
       <Header />
-      
+
       <main className="container mx-auto px-4 py-8">
         {/* Page Header */}
         <div className="text-center mb-12">
@@ -77,9 +83,10 @@ export default function ProductsPage() {
             🧸 Todos Nuestros Juguetes
           </h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-8">
-            Descubre nuestra increíble colección de juguetes mágicos para todas las edades
+            Descubre nuestra increíble colección de juguetes mágicos para todas
+            las edades
           </p>
-          
+
           {/* Search Bar */}
           <div className="max-w-md mx-auto relative">
             <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
@@ -102,10 +109,11 @@ export default function ProductsPage() {
           <div className="lg:col-span-3">
             <div className="flex justify-between items-center mb-6">
               <p className="text-gray-600">
-                Mostrando {filteredProducts.length} de {products.length} productos
+                Mostrando {filteredProducts.length} de {products.length}{" "}
+                productos
               </p>
             </div>
-            
+
             {filteredProducts.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 {filteredProducts.map((product) => (
@@ -126,7 +134,7 @@ export default function ProductsPage() {
           </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );
